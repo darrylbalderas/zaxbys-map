@@ -11,6 +11,14 @@ def write_to_file(filename, state_informations):
         for key in state_informations:
             fopen.write(state_informations[key]['address'] + ' + ' + state_informations[key]['city'] + "\n")
 
+
+def clear_csv_file(filename):
+    """
+    Removes csv file
+    """
+    if(os.path.exists(filename)):
+        os.remove(filename)
+
 def get_state_names(location_url):
     # Get all state_names location data from zaxbys homepage
     page = requests.get(location_url)
@@ -39,8 +47,7 @@ def get_location_list(location_url, state_name):
 """
 def main():
     filename = "test_data.txt"
-    with open(filename, 'w') as fopen: 
-        fopen.write('')
+    clear_csv_file(filename)
     location_url = 'https://www.zaxbys.com/locations/'
 
     state_names = get_state_names(location_url)
