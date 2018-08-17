@@ -3,18 +3,6 @@ import requests
 import os
 import pandas
 
-
-def write_to_file(filename, state_informations):
-    """
-    Writes to a specified csv file
-    """
-    with open(filename, 'a') as fopen:
-        for key in state_informations:
-            fopen.write(line_content(state_informations, key))
-
-def line_content(state_informations, key):
-    return state_informations[key]['address'] + " | " + state_informations[key]['city'] + " | " + state_informations[key]['state'] + " | " + state_informations[key]['zip-code'] + "\n"
-
 def clear_csv_file(filename):
     """
     Removes csv file
@@ -59,7 +47,7 @@ def main():
     """
     Scrapes state data for the amount of zaxbys in the state
     """
-    filename = "test_data.txt"
+    filename = "location_info.csv"
     clear_csv_file(filename)
     location_url = 'https://www.zaxbys.com/locations/'
     df = pandas.DataFrame()
