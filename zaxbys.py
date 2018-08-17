@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import os
+import pandas
 
 
 def write_to_file(filename, state_informations):
@@ -52,7 +53,7 @@ def get_location_list(location_url, state_name):
         temp2 = temp[1].strip().split(" ")
         state_information[index]['state'] = temp2[0]
         state_information[index]['zip-code'] = temp2[1]
-    return state_information
+    return pandas.DataFrame(state_information).transpose()
 
 def main():
     """
@@ -61,13 +62,12 @@ def main():
     filename = "test_data.txt"
     clear_csv_file(filename)
     location_url = 'https://www.zaxbys.com/locations/'
-
+    df = pandas.DataFrame()
     state_names = get_state_names(location_url)
-
     for state_name in state_names:
         state_information = get_location_list(location_url, state_name)
-        print(str(state_name) + " " + str(len(state_information)))
-        write_to_file(filename, state_information)
+        df = pandas.concat([df, state_information])
+    df.to_csv('location_info.csv', index=False)
 
 
 
