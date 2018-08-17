@@ -3,14 +3,13 @@ import requests
 import os
 
 
-"""
-   Writes to a specified csv file
-"""
 def write_to_file(filename, state_informations):
+    """
+    Writes to a specified csv file
+    """
     with open(filename, 'a') as fopen:
         for key in state_informations:
             fopen.write(state_informations[key]['address'] + ' + ' + state_informations[key]['city'] + "\n")
-
 
 def clear_csv_file(filename):
     """
@@ -20,6 +19,9 @@ def clear_csv_file(filename):
         os.remove(filename)
 
 def get_state_names(location_url):
+    """
+    Get state names for a given location url
+    """
     # Get all state_names location data from zaxbys homepage
     page = requests.get(location_url)
     # Create a BeautifulSoup object
@@ -28,6 +30,9 @@ def get_state_names(location_url):
     return [option['value'] for option in options]
 
 def get_location_list(location_url, state_name):
+    """
+    Gets all the locations for  a given state
+    """
     # Get desired location data from zaxbys
     state_url = location_url + '/' + state_name + '/'
     page = requests.get(state_url)
@@ -42,10 +47,10 @@ def get_location_list(location_url, state_name):
         state_information[index]['city'] = location_address[1].contents[0]
     return state_information
 
-"""
-   Scrapes state data for the amount of zaxbys in the state
-"""
 def main():
+    """
+    Scrapes state data for the amount of zaxbys in the state
+    """
     filename = "test_data.txt"
     clear_csv_file(filename)
     location_url = 'https://www.zaxbys.com/locations/'
