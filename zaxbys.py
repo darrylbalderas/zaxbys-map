@@ -9,7 +9,10 @@ def write_to_file(filename, state_informations):
     """
     with open(filename, 'a') as fopen:
         for key in state_informations:
-            fopen.write(state_informations[key]['address'] + ' + ' + state_informations[key]['city'] + "\n")
+            fopen.write(line_content(state_informations, key))
+
+def line_content(state_informations, key):
+    return state_informations[key]['address'] + " | " + state_informations[key]['city'] + " | " + state_informations[key]['state'] + " | " + state_informations[key]['zip-code'] + "\n"
 
 def clear_csv_file(filename):
     """
@@ -44,7 +47,11 @@ def get_location_list(location_url, state_name):
         state_information[index] = dict()
         location_address = location.find(class_="location-address").find_all('p')
         state_information[index]['address'] = location_address[0].contents[0]
-        state_information[index]['city'] = location_address[1].contents[0]
+        temp = location_address[1].contents[0].split(",")
+        state_information[index]['city'] = temp[0]
+        temp2 = temp[1].strip().split(" ")
+        state_information[index]['state'] = temp2[0]
+        state_information[index]['zip-code'] = temp2[1]
     return state_information
 
 def main():
